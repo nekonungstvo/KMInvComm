@@ -1,9 +1,13 @@
 name: KMInvComm
 main: KMInvComm.Core
-version: 1.0
+version: 1.1
 commands:
    nrp:      
-      description: Nothing
+      description: Get non-rp items
+      usage: /<command>
+      permission-message: You don't have <permission>
+   lore:
+      description: Edit items' lore as non-GM
       usage: /<command>
       permission-message: You don't have <permission>
 permissions:

@@ -3,14 +3,8 @@ package KMInvComm;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -109,6 +103,32 @@ implements Listener {
                          }
             return true;
             }
+        } else if (command.getName().equals("lore")) {
+            if (args.length == 0 || args[0].equals("help")) {
+                commandSender.sendMessage("§e----------- §fHelp: lore §e--------------------§f\nThis command allows player to add lore to the item he is currently holding. Note that GameMaster's confirmation is necessary, until than item is called \"UNCONFIRMED ITEM\"\n§e/lore add §f- add multiple lore lines\n§e/lore set §f- set lore for item.\n");
+                return true;
+            }
+            if (args[0].equals("add") || args[0].equals("set")) {
+                String sumArgs = "";
+                for (int i = 1; i < args.length; i++) {
+                    sumArgs += " " + args[i];
+                }
+                sumArgs = sumArgs.trim();
+                String commandText = args[0] + "lore " + sumArgs;
+                BukkitScheduler scheduler = getServer().getScheduler();
+                if (
+                        scheduler.scheduleSyncDelayedTask(this, new Runnable() {
+                            @Override
+                            public void run() {
+                                Bukkit.getServer().dispatchCommand(commandSender, "rename &4НЕ ПОДТВЕРЖДЕННЫЙ ПРЕДМЕТ");
+                                Bukkit.getServer().dispatchCommand(commandSender, commandText);
+                            }
+                        }, 1L) == -1) {
+                    System.out.println("_Что-то пошло не так, команда не была выполнена!_");
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }

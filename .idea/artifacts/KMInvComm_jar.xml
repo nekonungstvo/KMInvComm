@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="KMInvComm.jar">
+    <output-path>$PROJECT_DIR$/../testserver/actualserver/plugins</output-path>
+    <root id="root">
+      <element id="archive" name="KMInvComm.jar">
+        <element id="module-output" name="KMInvComm" />
+      </element>
+    </root>
+  </artifact>
+</component>
