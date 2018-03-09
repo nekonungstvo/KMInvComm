@@ -10,4 +10,8 @@ commands:
       description: Edit items' lore as non-GM
       usage: /<command>
       permission-message: You don't have <permission>
+   setplayername:
+      description: Set player's name
+      usage: /<command>
+      permission-message: You don't have <permission>
 permissions:
