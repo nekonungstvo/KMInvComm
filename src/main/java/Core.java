@@ -115,80 +115,53 @@ implements Listener {
                 }
                 return true;
             }
-        } else if (command.getName().equals("setplayername")) {
-            if (!commandSender.hasPermission("KMChat.gm")) {
-                commandSender.sendMessage("§4Недостаточно прав!");
-                return false;
-            }
-            ((Player) commandSender).setDisplayName(args[0]);
-            return true;
-        } else if (command.getName().equals("lore")) {
-            if (args.length == 0 || args[0].equals("help")) {
-                commandSender.sendMessage("§e----------- §fHelp: lore §e--------------------§f\nЭта команда позволяет игроку изменить описание предмета, который он держит в руке. Обратите внимание, что до подтверждения ГМом предмет не является действительным.\n§e/lore add §f- добавить строки к описанию.\n§e/lore set §f- установить описание.\n");
-                return true;
-            }
-            if (args[0].equals("add") || args[0].equals("set")) {
-                ItemStack itemStack = ((Player) commandSender).getItemInHand();
-                ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName("§4НЕ ПОДТВЕРЖДЕННЫЙ ПРЕДМЕТ");
-                String sumArgs = "";
-                for (int i = 1; i < args.length; i++) {
-                    sumArgs += args[i].replace('&', '§');
-                }
-                List<String> newLore = new ArrayList<String>();
-                while (true) {
-                    if (sumArgs.length() > 39) {
-                        newLore.add(sumArgs.substring(0, 39));
-                        sumArgs = sumArgs.substring(39);
-                    } else {
-                        newLore.add(sumArgs);
-                        break;
-                    }
-                }
-
-                String action = "";
-                if (args[0].equals("add")) {
-                    action = "\nHe added lore:\n";
-                    if (itemMeta.hasLore()) {
-                        List<String> helpVar = itemMeta.getLore();
-                        helpVar.addAll(newLore);
-                        itemMeta.setLore(helpVar);
-                    }
-                    else
-                        itemMeta.setLore(newLore);
-                }
-                else if (args[0].equals("set")) {
-                    itemMeta.setLore(newLore);
-                    action = "\nHe set lore:\n";
-                }
-                itemStack.setItemMeta(itemMeta);
-
-
-                try (FileWriter writer = new FileWriter("logs/lore/lore_current.log", true)) {
-                    Date date = new Date();
-                    String what = itemStack.toString();
-                    writer.write("[" + date.toString() + "] " + commandSender.getName() + " edited following item:\n" + what + action + sumArgs + '\n');
-                } catch (IOException ex) {
-                     System.out.println(ex.getMessage());
-                }
-               /* sumArgs = sumArgs.trim();
-                String commandText = args[0] + "lore " + sumArgs;
-                 BukkitScheduler scheduler = getServer().getScheduler();
+            if (args[0].equals("bag")) {
+                String commandText = "give " + playerName + " 5979 1 0 {display: {Name:\"§4НРП\"} }";
+                BukkitScheduler scheduler = getServer().getScheduler();
                 if (
                         scheduler.scheduleSyncDelayedTask(this, new Runnable() {
                             @Override
                             public void run() {
-                                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "pex user " + commandSender.getName() + " add sr.*");
-                                Bukkit.getServer().dispatchCommand(commandSender, "rename &4НЕ ПОДТВЕРЖДЕННЫЙ ПРЕДМЕТ");
-                                Bukkit.getServer().dispatchCommand(commandSender, commandText);
-                                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "pex user " + commandSender.getName() + " remove sr.*");
+                                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), commandText);
                             }
                         }, 1L) == -1) {
                     System.out.println("_Что-то пошло не так, команда не была выполнена!_");
                     return false;
-                }*/
+                }
+                return true;
             }
-            return true;
+            if (args[0].equals("chest")) {
+                String commandText = "give " + playerName + " 0146 1 0 {display: {Name:\"§4НРП\"} }";
+                BukkitScheduler scheduler = getServer().getScheduler();
+                if (
+                        scheduler.scheduleSyncDelayedTask(this, new Runnable() {
+                            @Override
+                            public void run() {
+                                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), commandText);
+                            }
+                        }, 1L) == -1) {
+                    System.out.println("_Что-то пошло не так, команда не была выполнена!_");
+                    return false;
+                }
+                return true;
+            }
+            if (args[0].equals("bigsign")) {
+                String commandText = "give " + playerName + " 0196 1 0 {display: {Name:\"§4НРП\"} }";
+                BukkitScheduler scheduler = getServer().getScheduler();
+                if (
+                        scheduler.scheduleSyncDelayedTask(this, new Runnable() {
+                            @Override
+                            public void run() {
+                                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), commandText);
+                            }
+                        }, 1L) == -1) {
+                    System.out.println("_Что-то пошло не так, команда не была выполнена!_");
+                    return false;
+                }
+                return true;
+            }
+
+
         }
         return false;
     }
