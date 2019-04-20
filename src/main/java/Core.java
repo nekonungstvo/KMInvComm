@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.inventory.ItemStack;
@@ -20,28 +21,37 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitScheduler;
 
 public class Core
-extends JavaPlugin
-implements Listener {
+        extends JavaPlugin
+        implements Listener {
 
     private Logger log = Logger.getLogger("Minecraft");
 
     public void onEnable() {
-         this.log.info(String.format("%s is enabled!", this.getDescription().getFullName()));
+        this.log.info(String.format("%s is enabled!", this.getDescription().getFullName()));
     }
 
-    public void onDisable() { 
+    public void onDisable() {
         this.log.info(String.format("%s is disabled!", this.getDescription().getFullName()));
-     }
+    }
 
     public boolean onCommand(CommandSender commandSender, Command command, String string, String[] args) {
         if (!(commandSender instanceof Player)) {
-                commandSender.sendMessage("§4you must be a player!§f");
-                return false;
+            commandSender.sendMessage("§4you must be a player!§f");
+            return false;
         }
         String playerName = commandSender.getName();
         if (command.getName().equals("nrp")) {
             if (args.length == 0 || args[0].equals("help")) {
-                commandSender.sendMessage("§e----------- §fHelp: nrp §e--------------------§f\nЭта команда используется для получения НРП-предметов, например кирки или табличек.\n§e/nrp tools §f- кирка и топор.\n§e/nrp signs §f- рамки и таблички.\n§e/nrp microtools §f- инструменты для работы с микроблоками.\n§e/nrp fire §f- огниво.\n");
+                commandSender.sendMessage("§e----------- §fHelp: nrp §e--------------------§f\n" +
+                        "Эта команда используется для получения НРП-предметов, например кирки или табличек.\n" +
+                        "§e/nrp tools §f- кирка и топор.\n" +
+                        "§e/nrp sign §f- рамки и таблички.\n" +
+                        "§e/nrp bigsign §f- большая табличка.\n" +
+                        "§e/nrp microtools §f- инструменты для работы с микроблоками.\n" +
+                        "§e/nrp fire §f- огниво.\n" +
+                        "§e/nrp bag §f- мешок.\n" +
+                        "§e/nrp chest §f- сундук-ловушка.\n"
+                );
                 return true;
             }
             if (args[0].equals("tools")) {
@@ -62,7 +72,7 @@ implements Listener {
                 }
                 return true;
             }
-            if (args[0].equals("signs")) {
+            if (args[0].equals("signs") || args[0].equals("sign")) {
                 String[] commandText = new String[2];
                 commandText[0] = "give " + playerName + " sign 16 0";
                 commandText[1] = "give " + playerName + " item_frame 64 0";
@@ -165,4 +175,24 @@ implements Listener {
         }
         return false;
     }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        List<String> list = new ArrayList<String>();
+
+        //list of commands
+        String[] tabs = {"chest", "sign", "bigsign", "bag", "tools", "fire", "microtools"};
+
+
+        //if the user started in the command eg. with "/game c", the list will add as prefix the "check" command
+        if (cmd.equals("nrp")) {
+            for (String s : tabs) {
+                if (s.startsWith(args[0]))
+                    list.add(s);
+            }
+        }
+
+        return list;
+    }
+
 }
